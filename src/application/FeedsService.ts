@@ -1,5 +1,4 @@
 import { URL } from "url";
-import rssFeeds from "../infrastructure/datasource/rss-feeds.json";
 import { FeedSqlite, FeedEntry } from "../infrastructure/sqlite/FeedSqlite";
 
 export class FeedsService {
@@ -7,10 +6,6 @@ export class FeedsService {
 
   constructor() {
     this.#feedSqlite = new FeedSqlite();
-  }
-
-  public getFeeds(): URL[] {
-    return rssFeeds.map((feedUrl) => new URL(feedUrl));
   }
 
   public async listFeeds(): Promise<FeedEntry[]> {

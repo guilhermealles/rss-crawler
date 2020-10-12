@@ -41,10 +41,19 @@ const removeFeed: RequestHandler = async (req, res) => {
   res.statusCode = 204;
   res.send();
 };
+
 const getFeedContent: RequestHandler = async (_, res) => {
-  const feedsUrls = feedsService.getFeeds();
+  const feedEntries = await feedsService.listFeeds();
+
+  const feedUrls = feedEntries.map((entry) => {
+    return new URL(entry.url);
+  });
+
   const feeds = await Promise.all(
-    feedsUrls.map((url) => feedService.getFeed(url))
+    feedUrls.map((url) => {
+      console.log(url.toString());
+      return feedService.getFeed(url);
+    })
   );
 
   res.statusCode = 200;
