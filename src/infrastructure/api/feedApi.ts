@@ -50,10 +50,7 @@ const getFeedContent: RequestHandler = async (_, res) => {
   });
 
   const feeds = await Promise.all(
-    feedUrls.map((url) => {
-      console.log(url.toString());
-      return feedService.getFeed(url);
-    })
+    feedUrls.map((url) => feedService.getFeed(url))
   );
 
   res.statusCode = 200;
