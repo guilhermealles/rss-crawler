@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "nodemon",
     "start": "npm run build && node build/index.js",
-    "build": "rimraf ./build && tsc",
+    "build": "rimraf ./build && tsc && cp -r ./src/db ./build",
     "test": "test"
   },
   "repository": {
@@ -32,6 +32,9 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "rss-parser": "^3.9.0"
+    "rss-parser": "^3.9.0",
+    "sql-template-strings": "^2.2.2",
+    "sqlite": "^4.0.15",
+    "sqlite3": "^5.0.0"
   }
 }
