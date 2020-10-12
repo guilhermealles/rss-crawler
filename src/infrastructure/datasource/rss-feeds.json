@@ -1,0 +1,5 @@
+[
+  "https://lorem-rss.herokuapp.com/feed",
+  "https://lorem-rss.herokuapp.com/feed?unit=second",
+  "https://lorem-rss.herokuapp.com/feed?unit=second&interval=30"
+]
