@@ -1,11 +1,5 @@
-import SQL from "sql-template-strings";
 import { URL } from "url";
 import { sqlite } from "./sqlite";
-
-export interface FeedEntry {
-  id: number;
-  url: string;
-}
 
 export class FeedSqlite {
   async getFeeds(): Promise<FeedEntry[]> {
@@ -14,6 +8,17 @@ export class FeedSqlite {
   }
 
   async addFeed(feedUrl: URL): Promise<void> {
-    await sqlite.exec(SQL`INSERT INTO feeds (url) VALUES ("${feedUrl}");`);
+    await sqlite.run("INSERT INTO feeds (url) VALUES (:url)", {
+      ":url": feedUrl,
+    });
   }
+
+  async deleteFeed(id: number): Promise<void> {
+    await sqlite.run("DELETE FROM feeds WHERE id = ?;", id);
+  }
+}
+
+export interface FeedEntry {
+  id: number;
+  url: string;
 }

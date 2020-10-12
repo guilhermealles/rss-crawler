@@ -21,4 +21,8 @@ export class FeedsService {
     const url = new URL(feedUrl);
     await this.#feedSqlite.addFeed(url);
   }
+
+  public async removeFeed(feedId: number): Promise<void> {
+    await this.#feedSqlite.deleteFeed(feedId);
+  }
 }

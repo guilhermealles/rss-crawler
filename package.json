@@ -33,7 +33,6 @@
   "dependencies": {
     "express": "^4.17.1",
     "rss-parser": "^3.9.0",
-    "sql-template-strings": "^2.2.2",
     "sqlite": "^4.0.15",
     "sqlite3": "^5.0.0"
   }
