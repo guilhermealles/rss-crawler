@@ -7,9 +7,9 @@ export class FeedSqlite {
     return result;
   }
 
-  async getFeedWithId(feedId: number): Promise<FeedEntry> {
+  async getFeedWithId(feedId: number): Promise<FeedEntry | null> {
     const result = await sqlite.get("SELECT * FROM feeds where id = ?", feedId);
-    return result;
+    return result ?? null;
   }
 
   async addFeed(feedUrl: URL): Promise<void> {

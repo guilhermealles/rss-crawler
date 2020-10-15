@@ -1,5 +1,6 @@
 import { URL } from "url";
 import { FeedSqlite, FeedEntry } from "../infrastructure/sqlite/FeedSqlite";
+import { ResourceNotFoundError } from "./error/ResourceNotFoundError";
 
 export class FeedsService {
   #feedSqlite: FeedSqlite;
@@ -13,7 +14,12 @@ export class FeedsService {
   }
 
   public async feedWithId(feedId: number): Promise<FeedEntry> {
-    return this.#feedSqlite.getFeedWithId(feedId);
+    const result = await this.#feedSqlite.getFeedWithId(feedId);
+    if (result === null) {
+      throw new ResourceNotFoundError(`Unable to find feed with id ${feedId}`);
+    } else {
+      return result;
+    }
   }
 
   public async addFeedUrl(feedUrl: string): Promise<void> {
