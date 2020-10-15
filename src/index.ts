@@ -1,7 +1,7 @@
 import express from "express";
 
 import { initSqlite } from "./infrastructure/sqlite/sqlite";
-
+import { morganMiddleware } from "./infrastructure/logging/morgan";
 import { feedApi } from "./infrastructure/api/feedApi";
 import { healthCheckApi } from "./infrastructure/api/healthCheckApi";
 
@@ -11,6 +11,7 @@ initSqlite(SQLITE_DB_PATH).then(() => {
   const app = express();
 
   app.use(express.json());
+  app.use(morganMiddleware());
   app.use(healthCheckApi());
   app.use(feedApi());
 
