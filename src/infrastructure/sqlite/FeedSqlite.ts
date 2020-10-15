@@ -7,6 +7,11 @@ export class FeedSqlite {
     return result;
   }
 
+  async getFeedWithId(feedId: number): Promise<FeedEntry> {
+    const result = await sqlite.get("SELECT * FROM feeds where id = ?", feedId);
+    return result;
+  }
+
   async addFeed(feedUrl: URL): Promise<void> {
     await sqlite.run("INSERT INTO feeds (url) VALUES (:url)", {
       ":url": feedUrl,

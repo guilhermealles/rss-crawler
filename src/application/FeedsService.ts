@@ -8,8 +8,12 @@ export class FeedsService {
     this.#feedSqlite = new FeedSqlite();
   }
 
-  public async listFeeds(): Promise<FeedEntry[]> {
+  public async getAllFeeds(): Promise<FeedEntry[]> {
     return this.#feedSqlite.getFeeds();
+  }
+
+  public async feedWithId(feedId: number): Promise<FeedEntry> {
+    return this.#feedSqlite.getFeedWithId(feedId);
   }
 
   public async addFeedUrl(feedUrl: string): Promise<void> {

@@ -2,28 +2,40 @@ import express, { Express, RequestHandler } from "express";
 import { URL } from "url";
 
 import { FeedsService } from "../../application/FeedsService";
-import { FeedService } from "../../application/FeedService";
+import { FeedContentService } from "../../application/FeedContentService";
 
 const feedsService = new FeedsService();
-const feedService = new FeedService();
+const feedContentService = new FeedContentService();
 
 export function feedApi(): Express {
   const api = express();
   api.get("/feed", listFeeds);
+  api.get("/feed/:id", getFeedContent);
   api.post("/feed", addFeed);
-  api.delete("/feed", removeFeed);
-
-  api.get("/feed/content", getFeedContent);
+  api.delete("/feed/:id", removeFeed);
 
   return api;
 }
 
 const listFeeds: RequestHandler = async (_, res) => {
-  const feedEntries = await feedsService.listFeeds();
+  const feedEntries = await feedsService.getAllFeeds();
 
   res.statusCode = 200;
   res.type("json");
   res.send(feedEntries);
+};
+
+const getFeedContent: RequestHandler = async (req, res) => {
+  const feedId = parseInt(req.params.id);
+  const feedEntry = await feedsService.feedWithId(feedId);
+
+  const feedContent = await feedContentService.getContent(
+    new URL(feedEntry.url)
+  );
+
+  res.statusCode = 200;
+  res.type("json");
+  res.send(feedContent);
 };
 
 const addFeed: RequestHandler = async (req, res) => {
@@ -35,25 +47,9 @@ const addFeed: RequestHandler = async (req, res) => {
 };
 
 const removeFeed: RequestHandler = async (req, res) => {
-  const feedId = req.body.id;
+  const feedId = parseInt(req.params.id);
   await feedsService.removeFeed(feedId);
 
   res.statusCode = 204;
   res.send();
-};
-
-const getFeedContent: RequestHandler = async (_, res) => {
-  const feedEntries = await feedsService.listFeeds();
-
-  const feedUrls = feedEntries.map((entry) => {
-    return new URL(entry.url);
-  });
-
-  const feeds = await Promise.all(
-    feedUrls.map((url) => feedService.getFeed(url))
-  );
-
-  res.statusCode = 200;
-  res.type("json");
-  res.send(feeds);
 };
