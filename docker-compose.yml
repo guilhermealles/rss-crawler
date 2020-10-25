@@ -1,0 +1,5 @@
+services:
+  rss-crawler:
+    build: .
+    ports:
+      - 3000:3000
