@@ -1,5 +1,6 @@
 services:
   rss-crawler:
+    container_name: rss_crawler
     build: .
     ports:
       - 3000:3000
